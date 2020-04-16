@@ -36,13 +36,27 @@ public class JwtTokenProvider {
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
-
+        
+        Claims claims = Jwts.claims().setSubject(userPrincipal.getUsername());
+        //claims.put("userId", userPrincipal.getId());
+        claims.put("email", userPrincipal.getEmail());
+        claims.put("username", userPrincipal.getUsername());
+        
         return Jwts.builder()
-                .setSubject(Long.toString(userPrincipal.getId()))
-                .setIssuedAt(new Date())
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
+        		.setClaims(claims)
+        		.setSubject(Long.toString(userPrincipal.getId()))
+        		.setExpiration(expiryDate)
+        		.setIssuedAt(new Date())
+        		.signWith(SignatureAlgorithm.HS512, jwtSecret)
+        		.compact();
+
+
+//        return Jwts.builder()
+//                .setSubject(Long.toString(userPrincipal.getId()))
+//                .setIssuedAt(new Date())
+//                .setExpiration(expiryDate)
+//                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+//                .compact();
     }
     
     public Long getUserIdFromJWT(String token) {

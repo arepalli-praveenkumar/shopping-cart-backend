@@ -41,7 +41,7 @@ import com.shoppingCartBe.services.NextSequenceNumber;
  *
  */
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/products")
 public class ProductsController {
 	
