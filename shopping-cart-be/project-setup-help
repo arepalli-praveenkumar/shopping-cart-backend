@@ -1,0 +1,15 @@
+/*cmd*/
+keytool -genkey -alias selfsigned_localhost_sslserver -keyalg RSA -keysize 2048 -validity 700 -keypass changeit -storepass changeit -keystore ssl-server.jks
+
+/*password*/
+changeit
+
+/*MongoDB*/
+
+navigate to C:\Program Files\MongoDB\Server\4.2\bin>mongo
+
+-> Then mongoDB starts listening at 27017
+-> Mongo Shell starts
+-> You need to connect to appropriate database use this cmd db.adminCommand( { listDatabases: 1 } )
+-> Above cmd will list your available databases then switch to particular DB by using user db_name (use shopping_cart)
+-> Once switching is over then you can execute multiple queries ex: db.getUsers() this show available users in DB
