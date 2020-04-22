@@ -66,10 +66,25 @@ public class UserController {
 		if (null != existingUser) {
 			existingUser.setName(user.getName());
 			existingUser.setPhoneNo(user.getPhoneNo());
+			existingUser.setGender(user.getGender());
 			return mongoTemplate.save(existingUser);
 		} else {
 			return null;
 		}	
+	}
+	
+	@PostMapping("/uploadProfilePic") 
+	public User uploadProfilePic(@RequestBody User user) {
+		
+		User existingUser = this.mongoTemplate.findOne(new Query(where("userID").is(user.getUserID())), User.class);
+		
+		if (null != existingUser) {
+			existingUser.setProfilePicImgStr(user.getProfilePicImgStr());
+			return mongoTemplate.save(existingUser);
+		} else {
+			return null;
+		}
+		
 	}
 
 }

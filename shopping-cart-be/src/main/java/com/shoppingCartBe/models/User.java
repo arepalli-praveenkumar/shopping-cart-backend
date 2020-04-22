@@ -30,9 +30,10 @@ public class User {
 	private String username;
 	private String phoneNo;
 	private String password;
-	private String plainPassword;
 	private long userID;
 	private String salt;
+	private String profilePicImgStr;
+	private String gender;
 	private Set<Role> roles = new HashSet<>();
 	
 	
@@ -204,20 +205,32 @@ public class User {
 		this.id = id;
 	}
 
-
 	/**
-	 * @return the plainPassword
+	 * @return the profilePicImgStr
 	 */
-	public String getPlainPassword() {
-		return plainPassword;
+	public String getProfilePicImgStr() {
+		return profilePicImgStr;
 	}
 
+	/**
+	 * @param profilePicImgStr the profilePicImgStr to set
+	 */
+	public void setProfilePicImgStr(String profilePicImgStr) {
+		this.profilePicImgStr = profilePicImgStr;
+	}
 
 	/**
-	 * @param plainPassword the plainPassword to set
+	 * @return the gender
 	 */
-	public void setPlainPassword(String plainPassword) {
-		this.plainPassword = plainPassword;
+	public String getGender() {
+		return gender;
+	}
+
+	/**
+	 * @param gender the gender to set
+	 */
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	
 	

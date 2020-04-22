@@ -107,7 +107,6 @@ public class AuthController {
                 signUpRequest.getEmail(), signUpRequest.getPassword(), signUpRequest.getUsername());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setPlainPassword(user.getPassword());
         
         System.out.println("RoleName.ROLE_USER ---"+RoleName.ROLE_USER);
 
