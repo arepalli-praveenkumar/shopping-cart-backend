@@ -101,7 +101,11 @@ public class AuthController {
             return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
-
+        
+        System.out.println("**signup*getEmail*"+signUpRequest.getEmail());
+        System.out.println("**signup*getName*"+signUpRequest.getName());
+        System.out.println("**signup*getPassword*"+signUpRequest.getPassword());
+        System.out.println("**signup*getUsername*"+signUpRequest.getUsername());
         // Creating user's account
         User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
                 signUpRequest.getEmail(), signUpRequest.getPassword(), signUpRequest.getUsername());
