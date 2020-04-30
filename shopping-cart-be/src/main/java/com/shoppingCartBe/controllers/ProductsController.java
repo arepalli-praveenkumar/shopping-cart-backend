@@ -7,12 +7,18 @@ import static org.springframework.data.mongodb.core.FindAndModifyOptions.options
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -31,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.shoppingCartBe.models.CustomSequences;
 import com.shoppingCartBe.models.Order;
 import com.shoppingCartBe.models.Product;
+import com.shoppingCartBe.models.WishList;
 import com.shoppingCartBe.repositories.ProductsRepository;
 import com.shoppingCartBe.security.CurrentUser;
 import com.shoppingCartBe.security.UserPrincipal;
@@ -118,12 +125,46 @@ public class ProductsController {
 	}
 	
 	@GetMapping("/myOrders/{userID}")
-	public Collection<Order> getCustomerOrders(@PathVariable Long userID) {
+	public Collection<Order> getCustomerOrders(@PathVariable Long userID) throws ParseException {
 		System.out.println("ProductsController:getCustomerOrders:"+userID);
-//		Query query = new Query();
-//		query.addCriteria(Criteria.where("userID").is(userID));
-		BasicQuery basicQuery = new BasicQuery("{'userID':"+ userID+ "}");
-		return this.mongoTemplate.find( basicQuery, Order.class, "orders");
+		Query query = new Query();
+		query.addCriteria(Criteria.where("userID").is(userID));
+		query.with(Sort.by(Sort.Direction.DESC, "purchaseDate"));
+//		BasicQuery basicQuery = new BasicQuery("{'userID':"+ userID+ "}");
+//		basicQuery.with(new Sort(Sort.Direction.DESC, null));
+		
+		//TODO
+		return this.mongoTemplate.find( query, Order.class, "orders");
+//		Map<Date, ArrayList<Order>> map = new HashMap<Date, ArrayList<Order>>();
+//		
+//		ArrayList<Order> sameDayOrders = new ArrayList<Order>();
+//		
+//		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//
+//		for (Order orderObj : ordersList) {
+//			
+//			Date todayWithZeroTime = formatter.parse(formatter.format(orderObj.getPurchaseDate()));
+//			map.putAll(todayWithZeroTime, sameDayOrders.add(orderObj));
+//			
+//		}		 
+	}
+	
+	@PostMapping("/saveWishProduct")
+	public WishList saveProductInWishList(@RequestBody WishList wishList) {
+		wishList.setWishId(nextSequenceNumber.getNextSequence(wishList.SEQUENCE_NAME));
+//		wishList.setUserID(userID);
+//		wishList.setProduct(wishList.getProduct());
+		return this.mongoTemplate.insert(wishList);
+	}
+	
+	@GetMapping("/getAllWishListProducts/{userID}")
+	public Collection<WishList> getAllWishListProducts(@PathVariable Long userID) {
+		
+		Query query = new Query();
+		query.addCriteria(Criteria.where("userID").is(userID));
+		//query.with(Sort.by(Sort.Direction.DESC, "purchaseDate"));
+		
+		return this.mongoTemplate.find( query, WishList.class, "wishlist");
 	}
 
 
